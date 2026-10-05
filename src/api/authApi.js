@@ -1,0 +1,26 @@
+import axios from "axios";
+
+const API = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+});
+
+// Attach JWT token automatically
+API.interceptors.request.use((req) => {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    req.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return req;
+});
+
+export const registerUser = (data) => {
+  return API.post("/auth/register", data);
+};
+
+export const loginUser = (data) => {
+  return API.post("/auth/login", data);
+};
+
+export default API;
